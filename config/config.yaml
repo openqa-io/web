@@ -1,0 +1,23 @@
+--- # OQA - Open Question Answer configuration file
+
+# Section 1 - Web server config
+# Support multiple ips and ports
+
+web:
+  listens:  # listens @ host and port
+    - host: localhost # host, ip v4
+      port: 8081 #port
+  static: /static # root of static files
+
+# Section 2 - Db for user info
+
+db:
+  host: 127.0.0.1 # postgresql first shard host
+  port: 5432 # postgresql first shard port
+  user: oqa # username
+  password: Oqa235813 # password
+  db: oqa # database name
+  poolSize: 20 # connection pool size.
+
+github:
+  app: abcdefg # app id
