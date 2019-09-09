@@ -1,6 +1,7 @@
 /target
 /classes
 /checkouts
+/bulma-sass
 profiles.clj
 pom.xml
 pom.xml.asc

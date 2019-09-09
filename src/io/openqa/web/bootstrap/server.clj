@@ -7,8 +7,7 @@
            (io.vertx.ext.web.handler BodyHandler StaticHandler))
   (:require [io.openqa.web.bootstrap.config :as config]
             [io.openqa.web.service.db :as db]
-            ;; [io.openqa.core.service.rest.handlers :as handlers]
-            ))
+            [io.openqa.web.service.handlers :as handlers]))
 
 (def httpRequestHandler
   (reify Handler
@@ -46,6 +45,7 @@
     ;; static file handler
     (.. main-router (route static) (handler static-handler))
     (.. main-router (get "/test") (handler httpRequestHandler))
+    (.. main-router (get "/") (handler handlers/home-page))
 
 
     (doto server

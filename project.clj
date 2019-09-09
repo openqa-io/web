@@ -13,7 +13,11 @@
                  [io.vertx/vertx-web "3.8.1"]
                  [io.vertx/vertx-pg-client "3.8.1"]
                  [org.clojure/tools.cli "0.4.2"]
-                 [cheshire "5.9.0"]]
+                 [hiccup "1.0.5"]
+                 [cheshire "5.9.0"]
+                 ;; cross linked - clojure-bulma
+                 [clojure-bulma "0.1.0-SNAPSHOT"]
+                 ]
   :main ^:skip-aot io.openqa.web.main
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
