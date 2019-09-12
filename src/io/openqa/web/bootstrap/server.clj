@@ -43,9 +43,12 @@
     ;; (.. sub-router (get static) (handler static-handler) )
 
     ;; static file handler
-    (.. main-router (route static) (handler static-handler))
-    (.. main-router (get "/test") (handler httpRequestHandler))
-    (.. main-router (get "/") (handler handlers/home-page))
+    (try
+      (.. main-router (route static) (handler static-handler))
+      (.. main-router (get "/test") (handler httpRequestHandler))
+      (.. main-router (get "/") (handler handlers/home-page))
+      (.. main-router (get "/api/github/login") (handler handlers/github-login))
+      (catch Exception e (println (. e printStackTrace))))
 
 
     (doto server

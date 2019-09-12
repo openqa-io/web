@@ -20,4 +20,4 @@ db:
   poolSize: 20 # connection pool size.
 
 github:
-  app: abcdefg # app id
+  appid: f4d72fd21cf50d0b8a6d # app id
