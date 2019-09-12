@@ -4,6 +4,7 @@
            (io.vertx.core.http HttpMethod)
            (io.vertx.ext.web Router)
            (java.io File)
+           (io.vertx.ext.web.client WebClient)
            (io.vertx.ext.web.handler BodyHandler StaticHandler))
   (:require [io.openqa.web.bootstrap.config :as config]
             [io.openqa.web.service.db :as db]
@@ -32,6 +33,7 @@
         server (. vertx createHttpServer )
         main-router (Router/router vertx)
         static-handler (StaticHandler/create "webroot")
+        web-client (WebClient/create vertx)
         ;; sub-router (init-sub-router vertx)
         ]
 
@@ -47,7 +49,7 @@
       (.. main-router (route static) (handler static-handler))
       (.. main-router (get "/test") (handler httpRequestHandler))
       (.. main-router (get "/") (handler handlers/home-page))
-      (.. main-router (get "/api/github/login") (handler handlers/github-login))
+      (.. main-router (get "/api/github/login") (handler (handlers/github-login web-client)))
       (catch Exception e (println (. e printStackTrace))))
 
 

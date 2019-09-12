@@ -3,8 +3,7 @@
            (io.vertx.core.net NetSocket)
            (io.vertx.core.json JsonObject)
            (io.vertx.core.http HttpMethod)
-           (io.vertx.ext.web Router)
-           (io.vertx.ext.web.client WebClient))
+           (io.vertx.ext.web Router))
   (:require [io.openqa.web.bootstrap.config :as config]
             [cheshire.core :as cheshire]
             [io.openqa.web.html.pages :as pages]
@@ -24,7 +23,9 @@
             state (. request getParam "state")]
         (.. context response (end (str "code=" code " state=" state)))))))
 
-(def github-login
+(defn github-login
+  "Create github login with vertx"
+  [web-client]
   (reify Handler
     (handle [this context]
       (let [config @config/config
@@ -33,14 +34,9 @@
             request (. context request)
             response (. context response)
             code (. request getParam "code")
-            _ (println code)
-            state (. request getParam "state")
-            _ (println state)
-            vertx (. context owner)
-            _ (println "vertx" vertx)
-            client (WebClient/create vertx)]
-        (.. client
-            (post "https://github.com/login/oauth/access_token")
+            _ (println code github)]
+        (.. web-client
+            (postAbs "https://github.com/login/oauth/access_token")
             (putHeader "Accept" "application/json")
             (sendJsonObject (.. (new JsonObject)
                                 (put "client_id" (:appid github))
@@ -49,8 +45,12 @@
                             (reify Handler
                               (handle [this ar]
                                 (if (. ar succeeded)
-                                  (let [response (. ar result)
-                                        body-string (. response bodyAsString)
+                                  (let [client-response (. ar result)
+                                        body-string (. client-response bodyAsString)
                                         body-json (cheshire/parse-string body-string)]
-                                    (. response (end body-string)))
-                                  (.. response (setStatusCode 500) (end "failed")))))))))))
+                                    (println body-string)
+                                    (.. response (end body-string)))
+                                  (do
+                                    (println (class (. ar result)) (. ar result))
+                                    (println (.. ar cause printStackTrace))
+                                    (.. response (setStatusCode 500) (end "failed"))))))))))))
