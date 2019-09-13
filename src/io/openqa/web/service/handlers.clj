@@ -16,12 +16,11 @@
 (def home-page
   (reify Handler
     (handle [this context]
-      (let [request (. context request)
-            response (. context response)
-            body-string (. request getBodyAsString)
-            code (. request getParam "code")
-            state (. request getParam "state")]
-        (.. context response (end (str "code=" code " state=" state)))))))
+      (let [response (. context response)
+            _ (println "root...xs")
+            body-string (pages/layout)
+            _ (println body-string)]
+        (.. response (end (hiccup/html body-string)))))))
 
 (defn github-login
   "Create github login with vertx"

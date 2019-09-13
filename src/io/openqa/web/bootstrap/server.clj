@@ -47,8 +47,8 @@
     ;; static file handler
     (try
       (.. main-router (route static) (handler static-handler))
-      (.. main-router (get "/test") (handler httpRequestHandler))
       (.. main-router (get "/") (handler handlers/home-page))
+      (.. main-router (get "/test") (handler httpRequestHandler))
       (.. main-router (get "/api/github/login") (handler (handlers/github-login web-client)))
       (catch Exception e (println (. e printStackTrace))))
 

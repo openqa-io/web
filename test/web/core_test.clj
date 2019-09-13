@@ -3,9 +3,10 @@
             [clojure-bulma.layout :refer :all]
             [hiccup.core :refer :all]
             [hiccup.page :as page]
+            [io.openqa.web.html.pages :as pages]
             ))
 
 (deftest a-test
   (testing "FIXME, I fail."
-    (println (page/html5 [:head (page/include-css "/static/css/openqa.css")] (hero {:children [:h1 "hello world"]})))
+    (println (pages/layout))
     (is (= 0 1))))
