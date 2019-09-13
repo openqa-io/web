@@ -41,15 +41,31 @@
                                 (put "client_id" (:appid github))
                                 (put "client_secret" (:github-secret github))
                                 (put "code" code))
-                            (reify Handler
-                              (handle [this ar]
-                                (if (. ar succeeded)
-                                  (let [client-response (. ar result)
-                                        body-string (. client-response bodyAsString)
-                                        body-json (cheshire/parse-string body-string)]
-                                    (println body-string)
-                                    (.. response (end body-string)))
-                                  (do
-                                    (println (class (. ar result)) (. ar result))
-                                    (println (.. ar cause printStackTrace))
-                                    (.. response (setStatusCode 500) (end "failed"))))))))))))
+                            (reify Handler))
+            (handle [this ar]
+                    (if (. ar succeeded)
+                      (let [client-response (. ar result)
+                            body-string (. client-response bodyAsString)
+                            body-json (cheshire/parse-string body-string)
+                            access_token (:access_token body-json)]
+                        (.. web-client
+                            (getAbs "https://api.github.com/user")
+                            (putHeader "Authorization" (str "token " access_token))
+                            (putHeader "Accept" "application/json")
+                            (send (reify Handler
+                                    (handle [this ar]
+                                      (if (. ar succeeded)
+                                        (let [client-response (. ar result)
+                                              body-string (. client-response bodyAsString)
+                                              ;; body-json (cheshire/parse-string body-string)
+                                              ]
+                                          (println body-string)
+                                          (.. response (end body-string)))
+                                        (do
+                                          (println (class (. ar result)) (. ar result))
+                                          (println (.. ar cause printStackTrace))
+                                          (.. response (setStatusCode 500) (end "failed")))))))))
+                      (do
+                          (println (class (. ar result)) (. ar result))
+                          (println (.. ar cause printStackTrace))
+                          (.. response (setStatusCode 500) (end "failed")))))))))
