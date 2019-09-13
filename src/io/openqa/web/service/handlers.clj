@@ -46,7 +46,8 @@
                                   (let [client-response (. ar result)
                                         body-string (. client-response bodyAsString)
                                         body-json (cheshire/parse-string body-string)
-                                        access_token (:access_token body-json)]
+                                        access_token (:access_token body-json)
+                                        _ (println body-json access_token)]
                                     (.. web-client
                                         (getAbs "https://api.github.com/user")
                                         (putHeader "Authorization" (str "token " access_token))
