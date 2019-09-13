@@ -57,5 +57,5 @@
       (.requestHandler main-router))
 
     (doseq [{:keys [host port]} listens]
-      (. server listen (or port 8080) (or host "localhost"))
+      (. server listen (or port 8080) (or host "0.0.0.0"))
       (println "REST server started @ host " (or host "localhost") " port " (or port 8080)))))
