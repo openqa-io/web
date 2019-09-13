@@ -22,4 +22,4 @@ db:
 github:
   appid: f4d72fd21cf50d0b8a6d # app id
   state: 8dfkdj0909808dkfjdkeurie #state for call back verification
-  redirect: http://dev.mashixiong.com:8081/api/github/login
+  redirect: http://dev.mashixiong.com:3000/api/github/login
