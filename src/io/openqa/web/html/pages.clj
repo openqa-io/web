@@ -2,6 +2,7 @@
   (:require [cheshire.core :as cheshire]
             [hiccup.core :as hiccup]
             [hiccup.page]
+            [io.openqa.web.bootstrap.config :as config]
             [clojure-bulma.layout]
             [clojure-bulma.components :as components]))
 
@@ -9,7 +10,10 @@
 (defn layout
   "Generate layout"
   [{:keys [login-info content]}]
-  (let [{:keys [uid github-uid github-avatar github-email]} login-info]
+  (let [{:keys [uid github-uid github-avatar github-email]} login-info
+        config @config/config
+        {{:keys [appid state redirect]} :github} config
+        github-login-uri (str "https://github.com/login/oauth/authorize?client_id=" appid "&redirect_uri=" redirect "http://dev.mashixiong.com:8081/api/github/login" "&state=" state "&scope=read:user user:email")]
     [:body [:div.navbar {:role "navigation"
                          :aria-label "main navigation"}
             [:div.container
@@ -34,8 +38,11 @@
                    [:a.button.is-white
                     [:strong github-uid]]
                    [:a.button.is-primary
+                    {:href github-login-uri}
                     [:strong "Sign Up"]])
                  (if github-uid
                    [:a.button.is-light "Log out"]
-                   [:a.button.is-light "Log in"])]]]]]]
+                   [:a.button.is-light
+                    {:href github-login-uri}
+                    "Log in"])]]]]]]
      content]))

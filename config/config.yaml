@@ -6,7 +6,7 @@
 web:
   listens:  # listens @ host and port
     - host: localhost # host, ip v4
-      port: 8081 #port
+      port: 3000 #port
   static: /static # root of static files
 
 # Section 2 - Db for user info
@@ -21,3 +21,5 @@ db:
 
 github:
   appid: f4d72fd21cf50d0b8a6d # app id
+  state: 8dfkdj0909808dkfjdkeurie #state for call back verification
+  redirect: http://dev.mashixiong.com:8081/api/github/login
