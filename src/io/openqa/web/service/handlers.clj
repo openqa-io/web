@@ -45,7 +45,7 @@
                                 (if (. ar succeeded)
                                   (let [client-response (. ar result)
                                         body-string (. client-response bodyAsString)
-                                        body-json (cheshire/parse-string body-string)
+                                        body-json (cheshire/parse-string body-string true)
                                         access_token (:access_token body-json)
                                         _ (println ">>>>>>>>>>>>>>>>>>>>> " body-string body-json access_token)]
                                     (.. web-client
